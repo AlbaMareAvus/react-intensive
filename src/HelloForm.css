@@ -5,6 +5,7 @@
   border: 1px solid tomato;
   border-radius: 20px;
   padding: 30px;
+  margin-block-end: 30px;
 }
 
 input {

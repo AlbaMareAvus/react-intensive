@@ -4,7 +4,8 @@ import './HelloForm.css';
 class HelloForm extends React.Component {
   constructor() {
     super();
-    this.state = {date: new Date()};
+    this.state = {date: new Date(), inputText: ''};
+    this.inputFocus = this.inputFocus.bind(this);
   }
 
   sayHello = () => {
@@ -12,17 +13,33 @@ class HelloForm extends React.Component {
     helloForm.addEventListener('submit', (evt) => {
       evt.preventDefault();
 
-      const name = evt.target[0].value;
-      if (name) {
-        alert(`Hello, React! My name is ${name})0`);
-        evt.target[0].value = '';
+      if (this.state.inputText) {
+        alert(`I told you, ${this.state.inputText} !== react)0`);
+        this.setState({
+          inputText: ''
+        });
       }
     });
+
   };
 
   tick() {
     this.setState({
       date: new Date()
+    });
+  }
+
+  inputFocus() {
+    this.textInput.focus()
+  }
+
+  isReact() {
+    return this.state.inputText.toLocaleLowerCase() === 'react'
+  }
+
+  inputHandle(evt) {
+    this.setState({
+      inputText: evt.target.value
     });
   }
 
@@ -47,10 +64,22 @@ class HelloForm extends React.Component {
   render() {
     return (
       <form className="form">
-        <h1>Say Hello Form</h1>
-        <input type="text" placeholder="What's your name?"/>
-        <button onClick={this.sayHello}>Say Hello</button>
+        <h1>{`You can't say react!`}</h1>
+        <input
+          type="text"
+          placeholder="Just try it"
+          ref={input => this.textInput = input}
+          onChange={evt => this.inputHandle(evt)}
+        />
+        <button
+          onClick={this.sayHello}
+          disabled={this.isReact()}
+        >Say React</button>
         <span>Сейчас {this.state.date.toLocaleTimeString()}</span>
+        <button onClick={(evt) => {
+          evt.preventDefault()
+          this.inputFocus()
+        }}>Set focus to input</button>
       </form>
     );
   }
